@@ -3,20 +3,32 @@ using System.Collections.Generic;
 
 namespace MenuOpgave;
 
-class Menu
+
+
+
+
+
+
+class Menu : AbstractMenuItem, IMenuItem
 {
-    public string Title { get; set; }
     public bool Running { get; private set; }
-    private List<MenuItem> Items = new List<MenuItem>();
+    private List<IMenuItem> Items = new List<IMenuItem>();
     private int index;
-    public void Add(MenuItem m)
+    public void Clear()
+    {
+        Items.Clear();
+    }
+    public void Add(IMenuItem m)
     {
         Items.Add(m);
     }
 
-    public Menu(string title)
+    public Menu(string title) : base(title)
     {
-        Title = title;
+    }
+    public override void Select()
+    {
+        Start();
     }
     public void Start()
     {
@@ -28,7 +40,7 @@ class Menu
         }
     }
 
-    private MenuItem Current
+    private IMenuItem Current
     {
         get
         {
@@ -40,11 +52,21 @@ class Menu
     {
         Console.Clear();
         Console.WriteLine($"[{Title}]");
-        foreach (MenuItem item in Items)
+        foreach (IMenuItem item in Items)
         {
-            if(Current == item)
+
+            if (Current == item)
+            {
+                var oldcolor = Console.BackgroundColor;
+                Console.BackgroundColor = ConsoleColor.Cyan;
                 Console.Write("* ");
-            Console.WriteLine(item.Title);
+                Console.WriteLine(item.Title);
+                Console.BackgroundColor = oldcolor;
+            }
+            else
+            {
+                Console.WriteLine(item.Title);
+            }
         }
     }
     private void HandleInput()

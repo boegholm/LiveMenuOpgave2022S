@@ -1,15 +1,13 @@
 ﻿namespace MenuOpgave;
 using System;
-class MenuItem
+class MenuItem : AbstractMenuItem, IMenuItem
 {
-    public MenuItem(string title, string content)
+    public MenuItem(string title, string content) : base(title)
     {
-        Title = title;
         Content = content;
     }
-    public string Title { get; set; }
     private string Content { get; set; }
-    public void Select()
+    public override void Select()
     {
         Console.Clear();
         Console.WriteLine(Title);
